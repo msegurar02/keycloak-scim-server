@@ -82,8 +82,6 @@ public class AdminEventController extends AbstractController {
         authDetails.setUserId("SCIM_CLIENT");
         event.setAuthDetails(authDetails);
 
-        logger.debugf("Sending admin event: %s %s %s", operationType, resourceType, resourcePath);
-
         if (representation != null) {
             try {
                 event.setRepresentation(JsonSerialization.writeValueAsString(representation));
@@ -110,7 +108,7 @@ public class AdminEventController extends AbstractController {
                 .map(providerFactory -> providerFactory.create(session))
                 .forEach(provider -> {
                     if (provider instanceof EventListenerProvider eventListenerProvider) {
-                        logger.debugf("Dispatching admin event to listener: %s", provider.getClass().getName());
+                        logger.debugf("Sending admin event: %s %s %s", operationType, resourceType, resourcePath);
                         eventListenerProvider.onEvent(event, includeRepresentation);
                     }
                 });
