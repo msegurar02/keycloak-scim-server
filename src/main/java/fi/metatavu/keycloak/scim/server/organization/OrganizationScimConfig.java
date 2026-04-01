@@ -2,6 +2,8 @@ package fi.metatavu.keycloak.scim.server.organization;
 
 import fi.metatavu.keycloak.scim.server.config.ConfigurationError;
 import fi.metatavu.keycloak.scim.server.config.ScimConfig;
+import org.jboss.logging.Logger;
+
 import java.util.List;
 import java.util.Map;
 import org.keycloak.models.OrganizationModel;
@@ -10,6 +12,8 @@ import org.keycloak.models.OrganizationModel;
  * SCIM configuration for organizations
  */
 public class OrganizationScimConfig implements ScimConfig {
+
+    private static final Logger logger = Logger.getLogger(OrganizationScimConfig.class.getName());
 
     public static final String SCIM_EXTERNAL_SHARED_SECRET = "SCIM_EXTERNAL_SHARED_SECRET";
     public static final String SCIM_EXTERNAL_JWKS_URI = "SCIM_EXTERNAL_JWKS_URI";
@@ -29,26 +33,33 @@ public class OrganizationScimConfig implements ScimConfig {
     public void validateConfig() throws ConfigurationError {
         AuthenticationMode mode = getAuthenticationMode();
         if (mode == null) {
+            logger.warnf("Organization SCIM config invalid: %s is not set", SCIM_AUTHENTICATION_MODE);
             throw new ConfigurationError(SCIM_AUTHENTICATION_MODE + " is not set");
         }
+
+        logger.debugf("Organization SCIM authentication mode: %s", mode);
 
         boolean isSharedSecretPresent = getSharedSecret() != null && !getSharedSecret().isBlank();
 
         if (mode == AuthenticationMode.EXTERNAL) {
             if (!isSharedSecretPresent) {
                 if (getExternalIssuer() == null) {
+                    logger.warnf("Organization SCIM config invalid: %s is not set", SCIM_EXTERNAL_ISSUER);
                     throw new ConfigurationError(SCIM_EXTERNAL_ISSUER + " is not set");
                 }
 
                 if (getExternalJwksUri() == null) {
+                    logger.warnf("Organization SCIM config invalid: %s is not set", SCIM_EXTERNAL_JWKS_URI);
                     throw new ConfigurationError(SCIM_EXTERNAL_JWKS_URI + " is not set");
                 }
 
                 if (getExternalAudience() == null) {
+                    logger.warnf("Organization SCIM config invalid: %s is not set", SCIM_EXTERNAL_AUDIENCE);
                     throw new ConfigurationError(SCIM_EXTERNAL_AUDIENCE + " is not set");
                 }
             }
         } else {
+            logger.warnf("Organization SCIM config invalid: authentication mode %s is not supported in organization mode", mode);
             throw new ConfigurationError(
                 String.format(
                     SCIM_AUTHENTICATION_MODE + " %s AuthenticationMode not supported in organization mode",

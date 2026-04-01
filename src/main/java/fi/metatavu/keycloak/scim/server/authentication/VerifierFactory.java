@@ -2,12 +2,15 @@ package fi.metatavu.keycloak.scim.server.authentication;
 
 import fi.metatavu.keycloak.scim.server.config.ScimConfig;
 import fi.metatavu.keycloak.scim.server.config.ScimConfig.AuthenticationMode;
+import org.jboss.logging.Logger;
 import org.keycloak.models.KeycloakSession;
 
 /**
  * Verifier factory
  */
 public class VerifierFactory {
+
+    private static final Logger logger = Logger.getLogger(VerifierFactory.class.getName());
 
     private VerifierFactory() {}
 
