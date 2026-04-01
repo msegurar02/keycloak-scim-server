@@ -23,13 +23,11 @@ public class VerifierFactory {
         }
         String sharedSecret = config.getSharedSecret();
         if (sharedSecret == null || sharedSecret.isBlank()) {
-            logger.debugf("Building ExternalTokenVerifier (issuer=%s, jwksUri=%s)", config.getExternalIssuer(), config.getExternalJwksUri());
             return new ExternalTokenVerifier(
                 config.getExternalIssuer(),
                 config.getExternalJwksUri(),
                 config.getExternalAudience());
         } else {
-            logger.debug("Building ExternalSharedSecretVerifier");
             return new ExternalSharedSecretVerifier(session, sharedSecret);
         }
     }
