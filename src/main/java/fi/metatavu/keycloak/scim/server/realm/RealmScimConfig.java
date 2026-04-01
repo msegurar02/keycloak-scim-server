@@ -4,6 +4,7 @@ import fi.metatavu.keycloak.scim.server.config.ConfigurationError;
 import fi.metatavu.keycloak.scim.server.config.ScimConfig;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
+import org.jboss.logging.Logger;
 import org.keycloak.models.RealmModel;
 
 import java.util.Optional;
@@ -12,6 +13,8 @@ import java.util.Optional;
  * SCIM configuration for a Keycloak realm.
  */
 public class RealmScimConfig implements ScimConfig {
+
+    private static final Logger logger = Logger.getLogger(RealmScimConfig.class.getName());
 
     public static final String SCIM_EXTERNAL_JWKS_URI = "scim.external.jwks.uri";
     public static final String SCIM_EXTERNAL_AUDIENCE = "scim.external.audience";
@@ -35,21 +38,27 @@ public class RealmScimConfig implements ScimConfig {
     public void validateConfig() throws ConfigurationError {
         AuthenticationMode mode = getAuthenticationMode();
         if (mode == null) {
+            logger.warn("Realm SCIM config invalid: SCIM_AUTHENTICATION_MODE is not set");
             throw new ConfigurationError("SCIM_AUTHENTICATION_MODE is not set");
         }
+
+        logger.debugf("Realm SCIM authentication mode: %s", mode);
 
         boolean isSharedSecretPresent = getSharedSecret() != null && !getSharedSecret().isBlank();
 
         if (mode == AuthenticationMode.EXTERNAL && !isSharedSecretPresent) {
             if (getExternalIssuer() == null) {
+                logger.warn("Realm SCIM config invalid: SCIM_EXTERNAL_ISSUER is not set");
                 throw new ConfigurationError("SCIM_EXTERNAL_ISSUER is not set");
             }
 
             if (getExternalJwksUri() == null) {
+                logger.warn("Realm SCIM config invalid: SCIM_EXTERNAL_JWKS_URI is not set");
                 throw new ConfigurationError("SCIM_EXTERNAL_JWKS_URI is not set");
             }
 
             if (getExternalAudience() == null) {
+                logger.warn("Realm SCIM config invalid: SCIM_EXTERNAL_AUDIENCE is not set");
                 throw new ConfigurationError("SCIM_EXTERNAL_AUDIENCE is not set");
             }
         }
