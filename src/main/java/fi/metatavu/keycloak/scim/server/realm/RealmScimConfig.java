@@ -24,7 +24,6 @@ public class RealmScimConfig implements ScimConfig {
     public static final String SCIM_IDENTITY_PROVIDER_ALIAS = "scim.identity.provider.alias";
 
     public static final String SCIM_LINK_IDP = "scim.link.idp";
-    public static final String SCIM_IDENTITY_PROVIDER_ALIAS = "scim.identity.provider.alias";
     public static final String SCIM_EMAIL_AS_USERNAME = "scim.email.as.username";
     public static final String SCIM_BASIC_AUTH_USERNAME = "scim.basic.auth.username";
     public static final String SCIM_BASIC_AUTH_PASSWORD = "scim.basic.auth.password";
@@ -184,17 +183,6 @@ public class RealmScimConfig implements ScimConfig {
                 .or(() -> config.getOptionalValue(SCIM_BASIC_AUTH_PASSWORD, String.class))
                 .orElse(null);
     }
-
-    /**
-     * Returns the configured identity provider alias   .
-     */
-    @Override
-    public String getIdentityProviderAlias() {
-        return readRealmAttribute(SCIM_IDENTITY_PROVIDER_ALIAS)
-                .or(() -> config.getOptionalValue(SCIM_IDENTITY_PROVIDER_ALIAS, String.class))
-                .orElse(null);
-    }
-
 
     /**
      * Helper method to read the first string from a realm attribute.
