@@ -63,9 +63,30 @@ public interface ScimConfig {
     boolean getLinkIdp();
 
     /**
+     * Returns the identity provider alias to link users to
+     *
+     * @return identity provider alias or null if not configured
+     */
+    String getIdentityProviderAlias();
+
+    /**
      * Returns whether email should be used as username instead of username
      *
      * @return true if email should be used as username
      */
     boolean getEmailAsUsername();
+
+    /**
+     * Gets the basic auth username (if using EXTERNAL mode with Basic auth)
+     *
+     * @return basic auth username or null if not configured
+     */
+    String getBasicAuthUsername();
+
+    /**
+     * Gets the basic auth password in PHC String format (if using EXTERNAL mode with Basic auth)
+     *
+     * @return basic auth password hash or null if not configured
+     */
+    String getBasicAuthPassword();
 }
