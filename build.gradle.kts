@@ -51,7 +51,8 @@ dependencies {
     compileOnly("org.keycloak:keycloak-services:$keycloakVersion")
 
     testImplementation("org.keycloak:keycloak-services:$keycloakVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation(platform("org.junit:junit-bom:$junitVersion"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core:${mockitoVersion}")
     testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
 
