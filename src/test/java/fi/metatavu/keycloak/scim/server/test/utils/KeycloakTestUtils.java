@@ -90,7 +90,6 @@ public class KeycloakTestUtils {
                 .withNetwork(network)
                 .withNetworkAliases("scim-keycloak")
                 .withEnv("SCIM_AUTHENTICATION_MODE", "KEYCLOAK")
-                .withEnv("SCIM_IDENTITY_PROVIDER_ALIAS", "keycloak-oidc")
                 .withEnv("SCIM_IDENTITY_PROVIDER_ALIAS", TestConsts.TEST_IDP)
                 .withEnv("SCIM_LINK_IDP", "true")
                 .withProviderLibsFrom(KeycloakTestUtils.getBuildProviders())
